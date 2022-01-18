@@ -1,0 +1,17 @@
+{
+  "name": "umzug",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Alfredo Revilla",
+  "license": "MIT",
+  "dependencies": {
+    "@types/umzug": "^2.3.0",
+    "chalk": "^4.1.0",
+    "execSync": "^1.0.2",
+    "mysql2": "^2.2.5",
+    "press-any-key": "^0.1.1",
+    "sequelize": "^6.5.1",
+    "umzug": "^2.3.0"
+  },
+  "type": "commonjs"
+}
