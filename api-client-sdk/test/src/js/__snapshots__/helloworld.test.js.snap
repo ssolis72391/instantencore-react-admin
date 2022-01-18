@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`client helloworld should return data 1`] = `
+Object {
+  "id": 1,
+  "value": "Hello world 1 from api",
+}
+`;
+
+exports[`client helloworld should return data 2`] = `
+Object {
+  "id": Any<Number>,
+  "value": "Hello world 1 from api",
+}
+`;
