@@ -1,0 +1,27 @@
+// FONTS
+@import "./variables.scss";
+
+.ie-dpb {
+  max-width: 100vw; // prevents horizontal cards from extending the width of view port in instantencore-mobile
+  a,
+  a:visited {
+    color: var(--link-color);
+  }
+
+  pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 600px) {
+  .ie-dpb {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

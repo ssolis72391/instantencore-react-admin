@@ -1,0 +1,111 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url("fonts/montserrat-regular.eot");
+  src: url("fonts/montserrat-regular.eot?#iefix") format("embedded-opentype"),
+    url("fonts/montserrat-regular.woff") format("woff"),
+    url("fonts/montserrat-regular.ttf") format("truetype"),
+    url("fonts/montserrat-regular.svg#Montserrat") format("svg");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Montserrat-Light";
+  src: url("fonts/montserrat-light.woff") format("woff"),
+    url("fonts/montserrat-light.woff2") format("woff2");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-Regular.eot");
+  src: url("fonts/OpenSans-Regular.eot?#iefix") format("embedded-opentype"),
+    url("fonts/OpenSans-Regular.woff") format("woff"),
+    url("fonts/OpenSans-Regular.ttf") format("truetype"),
+    url("fonts/OpenSans-Regular.svg#OpenSans") format("svg");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Open Sans Light";
+  src: url("fonts/OpenSans-Light.eot");
+  src: url("fonts/OpenSans-Light.eot?#iefix") format("embedded-opentype"),
+    url("fonts/OpenSans-Light.woff") format("woff"),
+    url("fonts/OpenSans-Light.ttf") format("truetype"),
+    url("fonts/OpenSans-Light.svg#OpenSans") format("svg");
+  font-style: normal;
+  font-weight: normal;
+}
+body {
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0;
+  font-family: "Montserrat-Light", sans-serif;
+  font-weight: normal;
+  color: #000000;
+}
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.page-container__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45em 1rem;
+  padding-left: 0;
+  text-transform: uppercase;
+  font-family: "Montserrat-Light", "Helvetica Neue", sans-serif;
+}
+.page-container__header-left-action {
+  padding: 0 1rem;
+  font-size: 1.3em;
+  flex: 0 0 auto;
+  min-width: 15%;
+}
+.page-container__header-left-action .btn--ie-link {
+  min-height: unset;
+  padding: 0;
+  color: #fff;
+}
+.page-container__header-title {
+  text-align: center;
+  font-weight: bold;
+  margin: 0.3rem 0;
+  flex: 1 1 0;
+}
+.page-container__header-right-action {
+  flex: 0 0 auto;
+  min-width: 15%;
+  font-size: 1.3em;
+}
+.page-container__content {
+  padding: 1.5em;
+  overflow: auto;
+}
+.page-container__footer {
+  flex: 0 0 auto;
+}
+.page-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #077caf;
+  color: #ffffff;
+  padding: 0.1em 1rem;
+  text-transform: uppercase;
+  font-family: "Montserrat-Light", "Helvetica Neue", sans-serif;
+  z-index: 1;
+}
+.page-actions .btn {
+  font-size: 0.9rem;
+}
+.heading {
+  text-transform: uppercase;
+  font-size: 0.9em;
+  line-height: 2em;
+}

@@ -1,0 +1,9 @@
+.ie-dpb {
+  .components {
+    margin-left: var(--page-margin);
+    margin-right: var(--page-margin);
+    &.view-all {
+      margin-top: var(--page-margin);
+    }
+  }
+}

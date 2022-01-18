@@ -1,0 +1,30 @@
+.ie-dpb {
+  --accent-background-color: #851619;
+  --accent-text-color: white;
+  --highlight-background-color: #bc1818;
+  --highlight-text-color: white;
+  --aspect-ratio-page-header: 56.25%; //16:9 ratio
+  --aspect-ratio-card: 56.25%; //16:9 ratio
+  --border-radius: 5px;
+  --card-background-color: #444;
+  --card-horizontal-width: 150px;
+  --card-image-background-color: #333;
+  --card-text-color: #fff;
+  --page-margin: 20px;
+  --page-background-color: #222;
+  --page-text-color: #fff;
+  --grouping-title-color: #d9d900;
+  --font-families: Roboto, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  --link-color: var(--accent-background-color);
+
+  --page-background-color: #fff;
+  --page-text-color: #333;
+  --card-background-color: #f0f3f6;
+  --card-text-color: #333;
+  --card-image-background-color: #fff;
+  --grouping-title-color: #a62f31;
+  --highlight-background-color: #a62f31;
+  --highlight-text-color: white;
+  --link-color: var(--accent-background-color);
+}

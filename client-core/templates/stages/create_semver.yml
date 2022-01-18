@@ -1,0 +1,53 @@
+
+parameters:
+  major: 1
+  minor: 0
+  stagename_master: v_master
+  stagename_dev: v_dev
+  pool:
+    vmImage: ubuntu-latest
+
+stages:
+
+# Versioning master branch builds
+- stage: ${{ parameters.stagename_master }}
+  displayName: ${{ parameters.stagename_master }}
+  dependsOn: []
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  pool: ${{ parameters.pool }}
+  variables:
+     major: ${{ parameters.major}}
+     minor: ${{ parameters.minor}}
+  jobs:
+  - job: ${{ parameters.stagename_master }}
+    variables:
+       patch: $[counter(format('semver-{0}-{1}', variables['major'], variables['minor']), 0)]
+    steps:
+      - bash: |
+           echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)"
+        name: SetMasterBuildName
+
+# Versioning feature branch and PR builds
+- stage: ${{ parameters.stagename_dev }}
+  displayName: ${{ parameters.stagename_dev }}
+  dependsOn: []
+  condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
+  pool: ${{ parameters.pool }}
+  variables:
+     major: ${{ parameters.major}}
+     minor: ${{ parameters.minor}}
+  jobs:
+  - job: ${{ parameters.stagename_dev }}
+    variables:
+       patch: 0 # Patch ideally would be $[counter(variables['minor'], 0)] +1
+       prpatch: $[counter(variables['system.pullrequest.pullrequestid'], 0)]
+       brpatch: $[counter(variables['build.sourcebranchname'], 0)]
+    steps:
+      - bash: |
+           echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)-PR$(system.pullrequest.pullrequestnumber).$(prpatch)"
+        condition: eq(variables['Build.Reason'], 'PullRequest')
+        name: SetPRBuildName
+      - bash: |
+           echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)-$(Build.SourceBranchName).$(brpatch)"
+        condition: ne(variables['Build.Reason'], 'PullRequest')
+        name: SetBranchBuildName

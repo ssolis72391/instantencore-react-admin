@@ -1,0 +1,111 @@
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+# https://aka.ms/yaml
+
+
+trigger:
+  batch: true
+  # branches:
+    # include:
+    #   - master
+  paths:
+    include:
+      - "client-core/*"
+    exclude:
+      - "client-core/README.md"
+pr:
+  autoCancel: true
+  drafts: false
+  paths:
+    include:
+      - "client-core/*"
+    exclude:
+      - "client-core/README.md"
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      endpoint: switchcase-build
+      name: SwitchCaseGroup/switchcase-azure-pipelines-templates
+      ref: refs/tags/v4.1.0
+    - repository: self
+      clean: true
+
+variables:
+  - group: private-npm-registry
+  - name: pathHere
+    value: $(System.DefaultWorkingDirectory)/client-core # value of the variable
+
+stages:
+
+# Versioning
+- template: templates/stages/create_semver.yml
+  parameters:
+    major: 0
+    minor: 1 # bump this manually when you make your feature branch
+    stagename_master: v_master
+    stagename_dev: v_dev
+
+# Begin Stages for building your application
+- stage: Validation
+  dependsOn: [v_master,v_dev]
+  condition: |
+    or
+    (
+      in(dependencies.v_master.result, 'Succeeded', 'SucceededWithIssues'),
+      in(dependencies.v_dev.result, 'Succeeded', 'SucceededWithIssues')
+    )
+  jobs:
+  - job: ValidationWork
+    steps:
+    - script: echo Hello, ValidationWork!
+      displayName: 'Example step of ValidationWork'
+
+- stage: NpmJobs
+  dependsOn: Validation
+  condition: in(dependencies.Validation.result, 'Succeeded', 'SucceededWithIssues')
+  jobs:
+  - job: clientcore
+    variables:  # job-level
+      # SwitchCase
+      customFeed: '061d1815-a5a3-4e97-9dfd-41183db86229'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: "12.x"
+        checkLatest: false
+      displayName: Install Node.js
+    - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
+      inputs:
+        versionSpec: "1.x"
+      displayName: "Install Yarn"
+    - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@3
+      inputs:
+        arguments: "install --frozen-lockfile"
+        projectDirectory: ${{ variables.pathHere }}
+        customRegistry: useNpmrc
+        customFeed: SwitchCase
+      displayName: Yarn Install
+    - bash: |
+        yarn version --new-version ${NEWVERSION} --no-git-tag-version
+        yarn build
+      displayName: Yarn Build
+      workingDirectory: ${{ variables.pathHere }}
+      env:
+        NEWVERSION: '$(build.buildnumber)'
+        ARTIFACT_DIR: '$(build.artifactstagingdirectory)'
+    - bash: |
+        yarn lint
+      displayName: Yarn lint
+      workingDirectory: ${{ variables.pathHere }}
+    - bash: |
+        yarn test
+      displayName: Yarn test
+      workingDirectory: ${{ variables.pathHere }}
+    - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@3
+      inputs:
+        arguments: "publish"
+        projectDirectory: ${{ variables.pathHere }}
+        customRegistry: useFeed
+        customFeed: SwitchCase
+      displayName: Yarn Publish

@@ -1,0 +1,41 @@
+.ie-dpb {
+  .component {
+    margin-bottom: 40px;
+
+    &__title {
+      display: flex;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+      &:empty {
+        margin-bottom: 0px;
+      }
+    }
+    &__title-bar {
+      width: 3px;
+      background-color: var(--accent-background-color);
+      margin-right: 5px;
+      flex: 0 0 auto;
+    }
+    &__subtitle {
+      margin-bottom: 5px;
+      &:empty {
+        margin-bottom: 0px;
+      }
+    }
+    &--spotlight {
+      background-color: var(--highlight-background-color);
+      border-radius: var(--border-radius);
+      padding: 10px;
+      overflow: hidden;
+
+      .component__header {
+        color: var(--highlight-text-color);
+      }
+
+      .component__title-bar {
+        display: none;
+      }
+    }
+  }
+}

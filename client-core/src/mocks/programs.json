@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Upcoming",
+    "programSummaries": [
+      {
+        "id": 1,
+        "header": {
+          "pretitle": "Mirvish Presents",
+          "title": "Porgy & Bess",
+          "subtitle": "June 1 - August 31, 2021",
+          "image": "https://www.metopera.org/globalassets/season/2019-20/operas/porgy-and-bess/1600x685/1600x685_porgy.jpg",
+          "contentPosition": "below",
+          "imageSize": "cover"
+        }
+      },
+      {
+        "id": 1,
+        "header": {
+          "pretitle": "Mirvish Presents",
+          "title": "Porgy & Bess",
+          "subtitle": "June 1 - August 31, 2021",
+          "image": "https://www.metopera.org/globalassets/season/2019-20/operas/porgy-and-bess/1600x685/1600x685_porgy.jpg",
+          "contentPosition": "above",
+          "imageSize": "contain"
+        }
+      },
+      {
+        "id": 2,
+        "header": {
+          "pretitle": "Mirvish Presents",
+          "title": "Porgy & Bess",
+          "subtitle": "June 1 - August 31, 2021",
+          "image": "https://www.mirvish.com/de/cache/modules_hero/902/hr_1800x1200_cfa-production-shots-1800x1200-2.jpg",
+          "contentPosition": "overlay",
+          "imageSize": "full"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Past",
+    "programSummaries": [
+      {
+        "id": 2,
+        "header": {
+          "pretitle": null,
+          "title": "Past Program",
+          "subtitle": null,
+          "image": null,
+          "contentPosition": "below",
+          "imageSize": "full"
+        }
+      }
+    ]
+  }
+]

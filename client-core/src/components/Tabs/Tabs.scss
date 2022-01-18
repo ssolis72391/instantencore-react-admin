@@ -1,0 +1,17 @@
+.ie-dpb {
+  .tabs {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .tab__item {
+    flex: 0 0 auto;
+    padding: 15px;
+    cursor: pointer;
+  }
+
+  .tab__item.selected {
+    border-bottom: solid 2px var(--accent-background-color);
+  }
+}

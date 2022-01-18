@@ -1,0 +1,14 @@
+{
+  "cid": 5201545,
+  "cssVariables": [
+    {
+      "name": "page-background-color",
+      "value": "#eee"
+    },
+    {
+      "name": "page-text-color",
+      "value": "#000"
+    }
+  ],
+  "customCss": "body { font-family: \"Arial\"; }"
+}

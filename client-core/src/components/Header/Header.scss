@@ -1,0 +1,101 @@
+.ie-dpb {
+  .header {
+    position: relative;
+    //margin: (-1 * $page-margin) (-1 * $page-margin) 20px (-1 * $page-margin);
+    margin-bottom: var(--page-margin);
+    display: flex;
+    flex-direction: column;
+
+    &.header--content-overlay {
+      .header__content {
+        color: #fff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 25px 10px 10px 10px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.65) 60%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        &.header__content--none {
+          background: none;
+        }
+      }
+    }
+
+    &.header--content-below {
+      .header__content {
+        padding: 10px;
+        background-color: var(--accent-background-color);
+        color: var(--accent-text-color);
+        &.header__content--none {
+          padding: 0;
+        }
+      }
+    }
+
+    &.header--content-above {
+      flex-direction: column-reverse;
+      .header__content {
+        padding: 10px;
+        background-color: var(--accent-background-color);
+        color: var(--accent-text-color);
+      }
+    }
+
+    &--image-size-contain {
+      .header__image {
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        padding-top: var(--aspect-ratio-page-header);
+      }
+    }
+
+    &--image-size-cover {
+      .header__image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        padding-top: var(--aspect-ratio-page-header);
+      }
+    }
+
+    &--image-size-full {
+      img {
+        display: block;
+      }
+    }
+
+    &__pretitle {
+      font-size: 0.9rem;
+    }
+
+    &__title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 5px;
+
+      &:empty {
+        margin-top: 0;
+      }
+    }
+
+    &__subtitle {
+      margin-top: 5px;
+      font-size: 0.9rem;
+
+      &:empty {
+        margin-top: 0;
+      }
+    }
+
+    &--image-size-contain {
+      background-size: contain;
+    }
+  }
+}
