@@ -1,0 +1,110 @@
+test.skip("skip", () => {});
+
+// todo: uncomment and update implementation
+// import { APIGatewayProxyEvent } from "aws-lambda";
+// import { getManyPrograms } from "../../../src/database/getManyPrograms";
+// import { handler } from "../../../src/lambdas/get-programs";
+//
+// jest.mock("../../../src/database/getManyPrograms");
+//
+// const _getManyPrograms = (getManyPrograms as unknown) as jest.Mock<
+//   Promise<{ totalCount: number; records: [] }>
+// >;
+// _getManyPrograms.mockResolvedValue({ totalCount: 1, records: [] });
+//
+// // todo: move to common
+// const defaultProxyEvent: APIGatewayProxyEvent = {
+//   body: null,
+//   headers: {},
+//   httpMethod: "",
+//   isBase64Encoded: false,
+//   multiValueHeaders: {},
+//   path: "",
+//   pathParameters: {},
+//   requestContext: {
+//     protocol: "",
+//     path: "",
+//     requestTimeEpoch: -1,
+//     accountId: "",
+//     resourceId: "",
+//     stage: "",
+//     requestId: "",
+//     resourcePath: "",
+//     httpMethod: "",
+//     apiId: "",
+//     authorizer: { principalId: "" },
+//     identity: {
+//       apiKeyId: "",
+//       principalOrgId: "",
+//       cognitoIdentityPoolId: "",
+//       accountId: "",
+//       cognitoIdentityId: "",
+//       caller: "",
+//       apiKey: "",
+//       sourceIp: "",
+//       accessKey: "",
+//       cognitoAuthenticationType: "",
+//       cognitoAuthenticationProvider: "",
+//       userArn: "",
+//       userAgent: "",
+//       user: "",
+//     },
+//   },
+//   multiValueQueryStringParameters: {},
+//   queryStringParameters: {},
+//   resource: "/programs",
+//   stageVariables: null,
+// };
+//
+// const validQueryStringParameters = {
+//   _start: "1",
+//   _end: "10",
+//   _order: "DESC",
+//   _sort: "title",
+//   dateFilter: "custom",
+//   localStartDate: "2021-05-21",
+//   localEndDate: "2021-05-21",
+// };
+//
+// describe("get-programs", () => {
+//   it("should pass validation", async () => {
+//     const result = await handler({
+//       ...defaultProxyEvent,
+//       queryStringParameters: validQueryStringParameters,
+//     });
+//
+//     expect(result.statusCode).toEqual(200);
+//   });
+//
+//   it("should throw validation error", async () => {
+//     const result = await handler({
+//       ...defaultProxyEvent,
+//     });
+//
+//     expect(result.statusCode).toBe(400);
+//   });
+//
+//   it("should throw validation error due _start", async () => {
+//     const result = await handler({
+//       ...defaultProxyEvent,
+//       queryStringParameters: {
+//         ...validQueryStringParameters,
+//         _start: "-1",
+//       },
+//     });
+//
+//     expect(result.statusCode).toEqual(400);
+//   });
+//
+//   it("should throw validation error due _end", async () => {
+//     const result = await handler({
+//       ...defaultProxyEvent,
+//       queryStringParameters: {
+//         ...validQueryStringParameters,
+//         _end: "-1",
+//       },
+//     });
+//
+//     expect(result.statusCode).toEqual(400);
+//   });
+// });

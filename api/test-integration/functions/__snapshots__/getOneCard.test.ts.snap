@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOneCard getOneCard response 1`] = `
+Object {
+  "body": Any<String>,
+  "headers": Object {
+    "Access-Control-Allow-Methods": "OPTIONS,GET",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 200,
+}
+`;
+
+exports[`getOneCard getOneCard response 2`] = `
+Object {
+  "action": Any<String>,
+  "componentId": Any<Number>,
+  "description": Any<String>,
+  "id": Any<Number>,
+  "imageUrl": Any<String>,
+  "orderIndex": Any<Number>,
+  "page": Any<Object>,
+  "pageId": Any<Number>,
+  "title": Any<Object>,
+  "url": Any<Object>,
+  "visible": Any<Boolean>,
+}
+`;

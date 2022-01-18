@@ -1,0 +1,81 @@
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/vsts/pipelines/languages/javascript
+# https://docs.microsoft.com/en-us/vsts/pipelines/tasks/
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - "api/*"
+      - "api-shared/src/*"
+      - "api-shared/test*/*"
+    exclude:
+      - "api/README.md"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".keepme"
+      - ".vscode/*"
+
+pr:
+  autoCancel: true
+  drafts: true
+  paths:
+    include:
+      - "api/*"
+      - "api-shared/src/*"
+      - "api-shared/test*/*"
+    exclude:
+      - "api/README.md"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".keepme"
+      - ".vscode/*"
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      endpoint: switchcase-build
+      name: SwitchCaseGroup/switchcase-azure-pipelines-templates
+      ref: refs/tags/v4.1.0
+    # - repository: self
+    #   clean: true
+
+variables:
+  - group: private-npm-registry
+  - name: pathHere
+    value: $(System.DefaultWorkingDirectory)/api # value of the variable
+    readonly: true
+  - name: db_host
+    value: $(dbHost)
+    readonly: true
+  - name: db_user
+    value: root
+    readonly: true
+  - name: db_name
+    value: test
+    readonly: true
+  - name: db_port
+    value: 3306
+    readonly: true
+
+jobs:
+  - template: templates/jobs/build_yarn.yml
+    parameters:
+      nodeVersionSpec: "14.x"
+      projectDirectory: "${{ variables.pathHere }}"
+      sourceFolder: "${{ variables.pathHere }}/dist"
+      summaryFileLocation: "${{ variables.pathHere }}/artifacts/coverage/cobertura-coverage.xml"
+      reportDirectory: "${{ variables.pathHere }}/artifacts/coverage/"
+      env:
+        DB_PASSWORD: $(dbPassword)
+        NPM_AUTH_IDENT_SWITCHCASE: $(NPM_AUTH_IDENT_SWITCHCASE)
+        SENTRY_AUTH_TOKEN: "e5e7ea1c3f09404f9a073b860b5f1753cfe9e12448274e6c8c7ff5da7c557bb8" # TODO replace this with an org token in environment (currently zach token)
+        SENTRY_ORGANIZATION: "instantencore"
+        SENTRY_PROJECT: "dpb-api-lambdas"
+  - template: templates/jobs/audit_yarn.yml
+    parameters:
+      projectDirectory: "${{ variables.pathHere }}"

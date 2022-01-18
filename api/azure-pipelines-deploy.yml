@@ -1,0 +1,108 @@
+resources:
+  pipelines:
+    - pipeline: build
+      source: instantencore-digital-program-book-api-lambdas
+      trigger:
+        branches:
+          - "*"
+
+# only triggered by pipeline trigger
+trigger: none
+pr: none
+
+parameters:
+  - name: lambdaPrefix
+    type: string
+    default: "ie-dpb-api-"
+  - name: lambdas
+    type: object
+    default: [
+        #client programs
+        client-getOneProgram,
+        client-getManyPrograms,
+        #client programs
+        #programs
+        postOneProgram,
+        getPrograms,
+        putOneProgram,
+        deleteOneProgram,
+        #programs
+        #components
+        getOneComponent,
+        deleteOneComponent,
+        unDeleteOneComponent,
+        postOneComponent,
+        putOneComponent,
+        #components
+        #cards
+        getOneCard,
+        putOneCard,
+        deleteOneCard,
+        postOneCard,
+        #cards
+        #pages
+        getOnePage,
+        putOnePage,
+        deleteOnePage,
+        putRestoreOnePage,
+        #pages
+        #design
+        getManyDesignVariables,
+        putOneDesignVariable,
+        #design
+      ]
+
+stages:
+  - stage: production
+    dependsOn: [copper]
+    jobs:
+      - template: templates/jobs/deploy.yml
+        parameters:
+          environment: production-instantencore-pipe-env
+          lambdaPrefix: ${{ parameters.lambdaPrefix }}
+          lambdas: ${{ parameters.lambdas }}
+
+  - stage: copper
+    dependsOn: []
+    jobs:
+      - template: templates/jobs/deploy.yml
+        parameters:
+          environment: copper-instantencore-pipe-env
+          lambdaPrefix: ${{ parameters.lambdaPrefix }}
+          lambdas: ${{ parameters.lambdas }}
+
+  - stage: silver
+    dependsOn: []
+    jobs:
+      - template: templates/jobs/deploy.yml
+        parameters:
+          environment: silver-instantencore-pipe-env
+          lambdaPrefix: ${{ parameters.lambdaPrefix }}
+          lambdas: ${{ parameters.lambdas }}
+
+  - stage: orange
+    dependsOn: []
+    jobs:
+      - template: templates/jobs/deploy.yml
+        parameters:
+          environment: orange-instantencore-pipe-env
+          lambdaPrefix: ${{ parameters.lambdaPrefix }}
+          lambdas: ${{ parameters.lambdas }}
+
+  - stage: evan
+    dependsOn: []
+    jobs:
+      - template: templates/jobs/deploy.yml
+        parameters:
+          environment: evan-instantencore-pipe-env
+          lambdaPrefix: ${{ parameters.lambdaPrefix }}
+          lambdas: ${{ parameters.lambdas }}
+
+  - stage: zach
+    dependsOn: []
+    jobs:
+      - template: templates/jobs/deploy.yml
+        parameters:
+          environment: zach-instantencore-pipe-env
+          lambdaPrefix: ${{ parameters.lambdaPrefix }}
+          lambdas: ${{ parameters.lambdas }}

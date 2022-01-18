@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    // "strictNullChecks": true
+  },
+  "include": [
+    "src/**/*.js",
+  ],
+  "exclude": [
+    "node_modules",
+    ".yarn",
+    "dist"
+  ]
+}

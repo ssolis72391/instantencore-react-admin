@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`deleteOnePage deleteOnePage response 1`] = `
+Object {
+  "body": Any<String>,
+  "headers": Object {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "DELETE",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 200,
+}
+`;
+
+exports[`deleteOnePage deleteOnePage response 2`] = `
+Object {
+  "id": Any<Number>,
+}
+`;

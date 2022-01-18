@@ -1,0 +1,168 @@
+test.skip('skip', () => {})
+
+// todo: uncomment and update implementation
+// process.env.IMAGE_STORE_BASE_PATH = "http://bucket";
+
+// jest.mock("@aws-sdk/client-s3");
+// jest.mock("node-fetch");
+// jest.mock("uniqid");
+// jest.mock("../../../src/database/models/");
+// jest.mock("../../../src/database/save-program-to-db");
+
+// import { ProgramModel } from "api-shared";
+// import { APIGatewayProxyEvent } from "aws-lambda";
+// import fetch, { Response as _Response } from "node-fetch";
+// import * as uniqid from "uniqid";
+// import { saveProgramToDb } from "../../../src/database/save-program-to-db";
+// import {
+//   handler,
+//   ImageDataType,
+//   PostOneProgramModel,
+//   saveImage,
+// } from "../../../src/lambdas/post-program";
+// import {
+//   randomFutureRfc3339DateOnlyString,
+//   randomPastRfc3339DateOnlyString,
+// } from "../../../test-tools";
+
+// const { Response } = jest.requireActual("node-fetch");
+
+// //  global
+// let response: _Response;
+
+// const __fetch = (fetch as unknown) as jest.Mock<Promise<_Response>, [string]>;
+// __fetch.mockImplementation(() => new Promise((a) => a(response)));
+
+// const __uniqid = (uniqid as unknown) as jest.Mock<string, [string?, string?]>;
+// __uniqid.mockImplementation(() => "random-id");
+
+// const saveProgramToDbMock = saveProgramToDb as jest.MockedFunction<
+//   typeof saveProgramToDb
+// >;
+
+// beforeEach(() => {
+//   response = new Response("sasasa") as _Response;
+//   response.headers.set("Content-Type", "image/png");
+// });
+
+// const defaultHandlerRequest: APIGatewayProxyEvent = {
+//   body: JSON.stringify({}),
+//   headers: {},
+//   httpMethod: "",
+//   isBase64Encoded: false,
+//   multiValueHeaders: {},
+//   path: "",
+//   pathParameters: {},
+//   requestContext: {
+//     protocol: "",
+//     path: "",
+//     requestTimeEpoch: -1,
+//     accountId: "",
+//     resourceId: "",
+//     stage: "",
+//     requestId: "",
+//     resourcePath: "",
+//     httpMethod: "",
+//     apiId: "",
+//     authorizer: { principalId: "" },
+//     identity: {
+//       apiKeyId: "",
+//       principalOrgId: "",
+//       cognitoIdentityPoolId: "",
+//       accountId: "",
+//       cognitoIdentityId: "",
+//       caller: "",
+//       apiKey: "",
+//       sourceIp: "",
+//       accessKey: "",
+//       cognitoAuthenticationType: "",
+//       cognitoAuthenticationProvider: "",
+//       userArn: "",
+//       userAgent: "",
+//       user: "",
+//     },
+//   },
+//   multiValueQueryStringParameters: {},
+//   queryStringParameters: {},
+//   resource: "",
+//   stageVariables: null,
+// };
+
+// describe("saveImage", () => {
+//   it("should return an url with a the file extension extracted from the base64 string content type", async () => {
+//     const url = await saveImage({
+//       data: "data:image/jpeg;base64,",
+//       type: ImageDataType.Base64String,
+//     });
+//     expect(url).toContain("http://bucket/random-id.jpeg");
+//   });
+//   it("should return an s3 generated url", async () => {
+//     const url = await saveImage({
+//       data: "http://server/sample.png",
+//       type: ImageDataType.Url,
+//     });
+
+//     expect(url).toEqual("http://bucket/random-id.png");
+//   });
+// });
+// describe("handler", () => {
+//   it("should return the db generated id", async () => {
+//     const model: PostOneProgramModel = {
+//       orgId: 1,
+//       localStartDate: randomPastRfc3339DateOnlyString(),
+//       localEndDate: randomFutureRfc3339DateOnlyString(),
+//       timeZone: "America/New_York",
+//       image: { data: "http://bucket/sample.gif", type: ImageDataType.Url },
+//       title: "title",
+//       season: "string",
+//     };
+//     saveProgramToDbMock.mockResolvedValueOnce(1);
+
+//     const { body } = await handler({
+//       ...defaultHandlerRequest,
+//       body: JSON.stringify(model),
+//     });
+
+//     expect(JSON.parse(body)).toEqual({ id: 1 });
+//   });
+//   it("title and name value should equal", async () => {
+//     const model: PostOneProgramModel = {
+//       orgId: 1,
+//       localStartDate: randomPastRfc3339DateOnlyString(),
+//       localEndDate: randomFutureRfc3339DateOnlyString(),
+//       timeZone: "America/New_York",
+//       image: { data: "http://bucket/sample.gif", type: ImageDataType.Url },
+//       title: "title",
+//       season: "string",
+//     };
+
+//     await handler({
+//       ...defaultHandlerRequest,
+//       body: JSON.stringify(model),
+//     });
+
+//     expect((saveProgramToDbMock.mock.calls[0][0] as ProgramModel).name).toEqual(
+//       "title"
+//     );
+//   });
+//   it("should return 201 status code", async () => {
+//     const model: PostOneProgramModel = {
+//       orgId: 1,
+//       localEndDate: randomFutureRfc3339DateOnlyString(),
+//       localStartDate: randomPastRfc3339DateOnlyString(),
+//       timeZone: "America/New_York",
+//       image: { data: "http://bucket/sample.gif", type: ImageDataType.Url },
+//       title: "title",
+//       season: "string",
+//     };
+
+//     saveProgramToDbMock.mockResolvedValueOnce(1);
+
+//     const { statusCode, body } = await handler({
+//       ...defaultHandlerRequest,
+//       body: JSON.stringify(model),
+//     });
+
+//     expect(statusCode).toEqual(201);
+//   });
+// });

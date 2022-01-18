@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: '"dpb-api"'
+servers:
+  - url: https://api/v1
+paths:
+  /programs:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOneProgramModel'
+      responses:
+        '201':
+          $ref: '#/components/responses/ResourceCreatedResponse'
+      x-amazon-apigateway-integration:
+        uri: >-
+          arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${get-programs-function-arn}:${lambda_alias}/invocations
+        credentials: ${lambda_execution_role_arn}
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+components:
+  responses:
+    InvalidOperationResponse:
+      description: Invalid operation
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    OkResponse:
+      description: Operation has been succesful
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    ResourceUpdatedResponse:
+      description: Resource has been updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The id of the updated resource
+            required:
+              - id
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    ResourceDeletedResponse:
+      description: Resource has been deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The id of the deleted resource
+            required:
+              - id
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    ResourceRestoredResponse:
+      description: Resource has been restored
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The id of the restored resource
+            required:
+              - id
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    ResourceCreatedResponse:
+      description: Resource has been created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The id of the created resource
+            required:
+              - id
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+  schemas:
+    PostOneProgramModel:
+      required:
+        - headerTitle
+        - localStartDate
+        - localEndDate
+        - timeZone
+      properties:
+        headerTitle:
+          type: string
+        headerImageUrl:
+          type: string
+        localStartDate:
+          type: string
+          format: date-time
+        localEndDate:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        season:
+          type: string
+

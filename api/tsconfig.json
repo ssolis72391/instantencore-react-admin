@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    //  todo: set to true when webpack dev config actually inlines them
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "module": "CommonJS",
+    "target": "ESNext",
+    "allowJs": false,
+    "moduleResolution": "node",
+    // "allowSyntheticDefaultImports": false,
+    // "esModuleInterop": false,
+    "strictNullChecks": false // todo: set to true
+  },
+  "include": [
+    "src/**/*",
+    "test-*/**/*"
+  ]
+}

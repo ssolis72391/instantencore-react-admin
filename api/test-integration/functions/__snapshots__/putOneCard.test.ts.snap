@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`putOneCard putOneCard response 1`] = `
+Object {
+  "body": Any<String>,
+  "headers": Object {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "GET,OPTIONS,PUT",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 200,
+}
+`;
+
+exports[`putOneCard putOneCard response 2`] = `
+Object {
+  "id": Any<Number>,
+}
+`;

@@ -1,0 +1,65 @@
+parameters:
+  name: audit
+  pool:
+    vmImage: ubuntu-latest
+  yarnVersionSpec: "1.x"
+  level: high
+  groups: dependencies
+  projectDirectory: $(System.DefaultWorkingDirectory)
+
+jobs:
+  - job: ${{ parameters.name }}
+    displayName: Security ${{ parameters.name }}
+    pool: ${{ parameters.pool }}
+    workspace:
+      clean: resources
+    steps:
+      - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
+        inputs:
+          versionSpec: ${{ parameters.yarnVersionSpec }}
+        displayName: "Install Yarn"
+      - bash: |
+          yarn audit --registry=https://registry.npmjs.org/ --frozen-lockfile --level ${AUDIT_LEVEL} --groups ${AUDIT_GROUPS}
+          auditstatus=$?
+
+          LEVEL_INFO=1
+          LEVEL_LOW=2
+          LEVEL_MODERATE=4
+          LEVEL_HIGH=8
+          LEVEL_CRITICAL=16
+
+          AUDIT_LEVEL_VALUE=0
+
+          case ${AUDIT_LEVEL} in
+          info)
+            AUDIT_LEVEL_VALUE=$LEVEL_INFO
+            ;;
+          low)
+            AUDIT_LEVEL_VALUE=$LEVEL_LOW
+            ;;
+          moderate)
+            AUDIT_LEVEL_VALUE=$LEVEL_MODERATE
+            ;;
+          high)
+            AUDIT_LEVEL_VALUE=$LEVEL_HIGH
+            ;;
+          critical)
+            AUDIT_LEVEL_VALUE=$LEVEL_CRITICAL
+            ;;
+          *)
+            AUDIT_LEVEL_VALUE=0
+            ;;
+          esac
+
+          if [[ $auditstatus -ge $AUDIT_LEVEL_VALUE ]]
+          then
+            exit $auditstatus
+          else
+            exit 0
+          fi
+
+        displayName: Audit NPM packages
+        workingDirectory: ${{ parameters.projectDirectory }}
+        env:
+          AUDIT_LEVEL: ${{ parameters.level }}
+          AUDIT_GROUPS: ${{ parameters.groups }}

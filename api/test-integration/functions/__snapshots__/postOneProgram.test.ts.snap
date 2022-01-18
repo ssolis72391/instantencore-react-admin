@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`postOneProgram works 1`] = `
+Object {
+  "body": Any<String>,
+  "headers": Object {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 201,
+}
+`;
+
+exports[`postOneProgram works 2`] = `
+Object {
+  "id": Any<Number>,
+}
+`;

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`data transformation client-getManyPrograms response 1`] = `
+Object {
+  "body": Any<String>,
+  "headers": Object {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "OPTIONS,GET,POST",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 200,
+}
+`;
+
+exports[`data transformation client-getManyPrograms response 2`] = `
+Object {
+  "programSummaries": Any<Array>,
+  "title": Any<String>,
+}
+`;
+
+exports[`data transformation client-getManyPrograms response 3`] = `
+Object {
+  "programSummaries": Any<Array>,
+  "title": Any<String>,
+}
+`;
+
+exports[`data transformation client-getManyPrograms response 4`] = `
+Object {
+  "programSummaries": Any<Array>,
+  "title": Any<String>,
+}
+`;

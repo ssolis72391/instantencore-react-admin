@@ -1,0 +1,42 @@
+* text=auto
+
+#git
+.gitattributes text eol=lf
+.gitkeep text eol=lf
+#git
+# javascript/typescript/react
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+# javascript/typescript/react
+# yaml
+*.yml text eol=lf
+*.yaml text eol=lf
+# yaml
+# terraform
+*.tf text eol=lf
+# terraform
+# shell
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.bat text eol=lf
+# shell
+#templates
+*.tpl text eol=lf
+*.sh.tpl text eol=lf
+*.template eol=lf
+#templates
+#others
+*.sequelizerc eol=lf
+*.md text eol=lf
+*.log text eol=lf
+#others
+# yarn cache
+*.zip binary
+# yarn cache
+#jest
+*.js.snap. eol=lf
+*.ts.snap. eol=lf
+#jest

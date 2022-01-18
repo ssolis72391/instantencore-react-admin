@@ -1,0 +1,31 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.177.0/containers/typescript-node
+{
+  "name": "Node.js & TypeScript",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace",
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "jebbs.plantuml",
+    "yzhang.markdown-all-in-one",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "cweijan.vscode-mysql-client2"
+  ],
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  //"forwardPorts": [4200, 3000],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "bash ./.devcontainer/postCreate.sh",
+
+  // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "node"
+}

@@ -1,0 +1,27 @@
+src/database/config/config.json
+set-env-vars.*
+js/src/functions/*.pem
+artifacts/
+dist/*
+
+*.env
+*.env.*
+!.env.template
+node_modules/
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# docs
+typedocs/*
+# docs

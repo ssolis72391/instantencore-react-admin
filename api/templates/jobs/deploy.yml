@@ -1,0 +1,42 @@
+parameters:
+  environment: ""
+  lambdaPrefix: switchcase_
+  lambdaAlias: live
+  lambdas: []
+
+jobs:
+  - deployment:
+    environment:
+      name: ${{ parameters.environment }}
+      resourceType: VirtualMachine
+    workspace:
+      clean: all
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            # Copy:
+            #  Move to a known path where lambda zip can be found by convention using lambda name
+            #  Assumes resources: pipelines: - pipeline: build in our main yml file so artifacts will download to $(Pipeline.Workspace)/build
+            #  Requires knowledge that the artifact structure is package/*.zip where each zip is a lambda
+            # Deploy:
+            #  Assumes zip file in artifact matches the convention of ${{ parameters.lambdaPrefix }}${{ lambda }}.zip
+            - bash: |
+                mkdir -p $(Pipeline.Workspace)/build/lambdas
+                cp $(Pipeline.Workspace)/build/package/*.zip $(Pipeline.Workspace)/build/lambdas/
+            - ${{ each lambda in parameters.lambdas }}:
+                - task: AmazonWebServices.aws-vsts-tools.LambdaDeployFunction.LambdaDeployFunction@1
+                  displayName: "Deploy: ${{ parameters.lambdaPrefix }}${{ lambda }}"
+                  # allowing continueOnError was useful in development
+                  continueOnError: false
+                  inputs:
+                    functionName: "${{ parameters.lambdaPrefix }}${{ lambda }}"
+                    localZipFile: "$(Pipeline.Workspace)/build/lambdas/${{ parameters.lambdaPrefix }}${{ lambda }}.zip"
+            - ${{ each lambda in parameters.lambdas }}:
+                - bash: |
+                    VERSION=$(aws lambda publish-version --function-name ${FUNCTION_NAME} | jq -r .Version)
+                    aws lambda update-alias --function-name ${FUNCTION_NAME} --name ${LAMBDA_ALIAS} --function-version $VERSION > /dev/null
+                  displayName: "Set Alias: ${{ parameters.lambdaPrefix }}${{ lambda }}"
+                  env:
+                    FUNCTION_NAME: ${{ parameters.lambdaPrefix }}${{ lambda }}
+                    LAMBDA_ALIAS: ${{ parameters.lambdaAlias }}

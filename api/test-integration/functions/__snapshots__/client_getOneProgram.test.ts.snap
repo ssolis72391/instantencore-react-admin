@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`data transformation client-getOneProgram response 1`] = `
+Object {
+  "body": "{\\"id\\":6,\\"endDate\\":\\"2021-12-01\\",\\"startDate\\":\\"2021-12-02\\",\\"title\\":\\"A title\\",\\"pages\\":[{\\"id\\":6,\\"title\\":\\"A title\\",\\"pageType\\":\\"root\\",\\"header\\":{\\"pretitle\\":null,\\"title\\":\\"A title\\",\\"subtitle\\":null,\\"image\\":null,\\"contentPosition\\":\\"above\\",\\"imageSize\\":\\"contain\\"},\\"components\\":[]}]}",
+  "headers": Object {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "OPTIONS,GET,POST",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 200,
+}
+`;

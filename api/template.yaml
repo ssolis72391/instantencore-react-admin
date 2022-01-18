@@ -1,0 +1,3 @@
+Resources:
+  GetPrograms:
+    Type: AWS::Serverless::Function

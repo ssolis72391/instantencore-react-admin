@@ -1,0 +1,131 @@
+test.skip('skip', () => {})
+
+// todo: uncomment and update implementation
+// import { ProgramStatus, PutOneProgramModel } from "api-shared";
+// import { APIGatewayProxyEvent } from "aws-lambda";
+// import * as faker from "faker";
+// import { getOneProgram } from "../../../src/database/getPrograms";
+// import { updateOneProgram } from "../../../src/database/updateOneProgram";
+// import { programsHeaders } from "../../../src/headers";
+// import { handleImagePayload } from "../../../src/lambdas/core";
+// import { putProgram } from "../../../src/lambdas/put-program";
+// import {
+//   randomFutureRfc3339DateOnlyString,
+//   randomNumber,
+//   randomPastRfc3339DateOnlyString,
+//   randomWords,
+// } from "../../../test-tools";
+
+// jest.mock("../../../src/database/getPrograms");
+// const getOneProgramMock = getOneProgram as jest.MockedFunction<
+//   typeof getOneProgram
+// >;
+// const handleImagePayloadMock = handleImagePayload as jest.MockedFunction<
+//   typeof handleImagePayload
+// >;
+
+// jest.mock("../../../src/database/updateOneProgram");
+// const updateOneProgramMock = updateOneProgram as jest.MockedFunction<
+//   typeof updateOneProgram
+// >;
+
+// const defaultHandlerRequest: APIGatewayProxyEvent = {
+//   body: "",
+//   headers: {},
+//   httpMethod: "",
+//   isBase64Encoded: false,
+//   multiValueHeaders: {},
+//   path: "",
+//   pathParameters: {},
+//   requestContext: {
+//     protocol: "",
+//     path: "",
+//     requestTimeEpoch: -1,
+//     accountId: "",
+//     resourceId: "",
+//     stage: "",
+//     requestId: "",
+//     resourcePath: "",
+//     httpMethod: "POST",
+//     apiId: "",
+//     authorizer: { principalId: "" },
+//     identity: {
+//       apiKeyId: "",
+//       principalOrgId: "",
+//       cognitoIdentityPoolId: "",
+//       accountId: "",
+//       cognitoIdentityId: "",
+//       caller: "",
+//       apiKey: "",
+//       sourceIp: "",
+//       accessKey: "",
+//       cognitoAuthenticationType: "",
+//       cognitoAuthenticationProvider: "",
+//       userArn: "",
+//       userAgent: "",
+//       user: "",
+//     },
+//   },
+//   multiValueQueryStringParameters: {},
+//   queryStringParameters: {},
+//   resource: "",
+//   stageVariables: null,
+// };
+
+// describe("putProgram", () => {
+//   it("ok", async () => {
+//     updateOneProgramMock.mockResolvedValueOnce(1);
+
+//     // const now = new Date();
+
+//     const random = Math.random() === 0;
+//     const imageUrl = !random ? faker.image.imageUrl() : faker.image.dataUri();
+//     const requestBody: PutOneProgramModel = {
+//       orgId: 1,
+//       imageUrl,
+//       isImageDataUrl: random,
+//       localEndDate: randomFutureRfc3339DateOnlyString(),
+//       localStartDate: randomPastRfc3339DateOnlyString(),
+//       name: randomWords(3),
+//       notes: randomWords(3),
+//       preTitle: randomWords(3),
+//       status:
+//         Math.random() == 1 ? ProgramStatus.Draft : ProgramStatus.Published,
+//       subTitle: randomWords(5),
+//       timeZone: "America/Lima",
+//       title: randomWords(5),
+//       season: faker.random.word(),
+//     };
+
+//     getOneProgramMock.mockResolvedValueOnce({
+//       imageUrl: faker.internet.url(),
+//       localStartDate: randomPastRfc3339DateOnlyString(),
+//       localEndDate: randomFutureRfc3339DateOnlyString(),
+//       name: randomWords(3),
+//       orgId: randomNumber({ min: 1, max: 100, precision: 0 }),
+//       status:
+//         Math.random() == 0 ? ProgramStatus.Draft : ProgramStatus.Published,
+//       timeZone: "America/Lima",
+//       utcEndDate: randomPastRfc3339DateOnlyString(),
+//       utcStartDate: randomFutureRfc3339DateOnlyString(),
+//       id: randomNumber({ min: 1, max: 100, precision: 0 }),
+//       isDeleted: Math.random() == 0,
+//       notes: randomWords(3),
+//       season: randomWords(3),
+//       subTitle: randomWords(5),
+//     });
+
+//     const result = await putProgram({
+//       ...defaultHandlerRequest,
+//       body: JSON.stringify(requestBody),
+//       resource: "/programs/{id}",
+//       pathParameters: { id: "1" },
+//       httpMethod: "PUT",
+//     });
+//     const { statusCode, body, headers } = result;
+
+//     expect(statusCode).toBe(200);
+//     expect(JSON.parse(body).id).toEqual(1);
+//     expect(headers).toEqual(programsHeaders);
+//   });
+// });

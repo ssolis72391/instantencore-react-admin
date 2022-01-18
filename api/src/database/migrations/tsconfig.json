@@ -1,0 +1,17 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "pretty": true,
+        "alwaysStrict": true,
+        "incremental": true,
+        "target": "ES6",
+        "module": "CommonJS",
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "outDir": "../../../dist"
+    },
+    "include": [
+        "./**/*.ts"
+    ]
+}

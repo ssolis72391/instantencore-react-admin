@@ -1,0 +1,120 @@
+parameters:
+  name: build
+  pool:
+    vmImage: ubuntu-latest
+  nodeVersionSpec: "14.x"
+  yarnVersionSpec: "1.x"
+  customRegistry: useNpmrc
+  customFeed:
+  testResultsFiles: "artifacts/junit.xml"
+  projectDirectory: $(System.DefaultWorkingDirectory)
+  summaryFileLocation: $(System.DefaultWorkingDirectory)/artifacts/coverage/cobertura-coverage.xml
+  reportDirectory: $(System.DefaultWorkingDirectory)/artifacts/coverage/
+  sourceFolder: $(System.DefaultWorkingDirectory)/dist
+  sourceContents: "**/*"
+  targetFolder: $(Build.ArtifactStagingDirectory)/
+  archiveFile: ""
+  artifactName: package
+  env:
+    ENV_PLACEHOLDER: "placeholder" # This ENV_PLACEHOLDER is to work around the error that is throw when this parameter is completely empty"
+
+jobs:
+  - job: ${{ parameters.name }}
+    pool: ${{ parameters.pool }}
+    workspace:
+      clean: resources
+    steps:
+      - checkout: self
+        clean: true
+      - task: NodeTool@0
+        inputs:
+          versionSpec: ${{ parameters.nodeVersionSpec }}
+          checkLatest: false
+        displayName: Install Node.js
+      - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
+        inputs:
+          versionSpec: ${{ parameters.yarnVersionSpec }}
+        displayName: "Install Yarn"
+      # using var_yarn_install as variable name because simply using yarn_install creates some collision of variables probably in the yarn task
+      - bash: |
+          YARN_VERSION=`yarn -v`
+          echo yarn version is ${YARN_VERSION}
+          case "${YARN_VERSION}" in
+            1.*)
+              echo setting up for yarn install with yarn 1 options
+              echo "##vso[task.setvariable variable=var_yarn_install]install --frozen-lockfile"
+              ;;
+            2.*)
+              echo setting up for yarn install with yarn 2 options
+              echo "##vso[task.setvariable variable=var_yarn_install]install --immutable --immutable-cache"
+              ;;
+            *)
+              echo "unknown yarn version" && exit 1
+              ;;
+          esac
+          echo "${VAR_YARN_INSTALL}"
+        displayName: Set var_yarn_install command
+        workingDirectory: ${{ parameters.projectDirectory }}
+        env: ${{ parameters.env }}
+      - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@3
+        displayName: Install NPM packages
+        env: ${{ parameters.env }}
+        inputs:
+          arguments: "$(var_yarn_install)"
+          projectDirectory: ${{ parameters.projectDirectory }}
+          customRegistry: ${{ parameters.customRegistry }}
+          customFeed: ${{ parameters.customFeed }}
+      - bash: |
+          cd ../api-shared
+          yarn
+          yarn build
+        displayName: "Build local dependencies"
+        workingDirectory: ${{ parameters.projectDirectory }}
+      - bash: yarn test
+        displayName: "Test"
+        workingDirectory: ${{ parameters.projectDirectory }}
+        env: ${{ parameters.env }}
+        enabled: true
+      - bash: yarn build
+        displayName: "Build"
+        workingDirectory: ${{ parameters.projectDirectory }}
+        env: ${{ parameters.env }}
+      - task: PublishTestResults@2
+        displayName: Publish Test Results
+        inputs:
+          testRunner: "JUnit"
+          testResultsFiles: ${{ parameters.testResultsFiles }}
+          searchFolder: ${{ parameters.projectDirectory }}
+          mergeTestResults: false # Optional
+          #testRunTitle: # Optional
+          platform: Node ${{ parameters.nodeVersionSpec }}
+          #configuration: # Optional
+          #publishRunAttachments: true # Optional
+      - task: PublishCodeCoverageResults@1
+        displayName: Publish code coverage
+        inputs:
+          codeCoverageTool: "cobertura"
+          summaryFileLocation: ${{ parameters.summaryFileLocation }}
+          reportDirectory: ${{ parameters.reportDirectory }}
+          #additionalCodeCoverageFiles: # Optional
+          #failIfCoverageEmpty: false # Optional
+      - task: CopyFiles@2
+        displayName: Copy build artifacts
+        inputs:
+          sourceFolder: ${{ parameters.sourceFolder }}
+          contents: ${{ parameters.sourceContents }}
+          targetFolder: ${{ parameters.targetFolder }}
+          cleanTargetFolder: true # Optional
+          #overWrite: false # Optional
+          #flattenFolders: false # Optional
+      - task: ArchiveFiles@1
+        displayName: "tarball artifact"
+        condition: and(succeeded(), ne('${{ parameters.archiveFile }}', ''))
+        inputs:
+          rootFolder: ${{ parameters.targetFolder }}
+          includeRootFolder: false
+          archiveType: tar
+          tarCompression: bz2
+          archiveFile: ${{ parameters.archiveFile }}
+      - publish: ${{ coalesce(parameters.archiveFile , parameters.targetFolder) }}
+        artifact: ${{ parameters.artifactName }}
