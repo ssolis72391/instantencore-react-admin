@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "command": "yarn start",
+            "name": "Run yarn start (compiles project in watch mode)",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+    ]
+}
