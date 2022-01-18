@@ -1,0 +1,6 @@
+{
+    "[terraform]": {
+        "editor.defaultFormatter": "l2fprod.terraform-fork"
+    },
+    "editor.formatOnSave": true,
+}

@@ -1,0 +1,1284 @@
+openapi: 3.0.1
+info:
+  title: "${title}"
+  version: 1.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - url: https://virtserver.swaggerhub.com/alfredorevilla/dpb2/1.0.0
+    description: SwaggerHub API Auto Mocking
+  - url: "https://${hostname}.${domainname}/{basePath}"
+    description: Terraform required
+    variables:
+      basePath:
+        default: "${version}"
+paths:
+  "/pages/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageModel"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${getOnePage-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutOnePageModel"
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceUpdatedResponse"
+        400:
+          $ref: "#/components/responses/InvalidOperationResponse"
+        404:
+          description: "Page was not found"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+        500:
+          description: "Internal server error"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putOnePage-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,DELETE,PUT,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+    delete:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceDeletedResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${deleteOnePage-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+
+  /cards:
+    post:
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+      responses:
+        "201":
+          description: "A card has been created"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Created card id
+                required:
+                  - id
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${postOneCard-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+    options:
+      responses:
+        "200":
+          description: "Ok"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,POST,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/users/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${get-user-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          description: "Ok"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  /productions:
+    get:
+      responses:
+        "200":
+          description: "Ok"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Production"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${get-productions-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/client/programs/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      responses:
+        200:
+          description: "Ok"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${client-getOneProgram-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+        default:
+          statusCode: "200"
+          responseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'*'"
+        type: aws_proxy
+        httpMethod: "POST"
+  "/client/programs":
+    get:
+      parameters:
+        - name: cid
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Ok"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${client-getManyPrograms-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+        default:
+          statusCode: "200"
+          responseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'*'"
+        type: aws_proxy
+        httpMethod: "POST"
+  "/programs/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                type: object
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${get-programs-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    delete:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceDeletedResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${delete-program-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                headerImageUrl:
+                  type: string
+                localEndDate:
+                  type: string
+                localStartDate:
+                  type: string
+                internalName:
+                  type: string
+                internalNotes:
+                  type: string
+                headerTitle:
+                  type: string
+                headerPreTitle:
+                  type: string
+                status:
+                  type: string
+                timeZone:
+                  type: string
+                headerImageSize:
+                  type: string
+                headerTextPosition:
+                  type: string
+                headerSubTitle:
+                  type: string
+                venue:
+                  type: string
+            example:
+              id: 1
+              headerImageUrl: https://dpb-image-store-silver-instantencore-com.s3.amazonaws.com/8ks83qpw1.jpeg
+              localEndDate: "2021-10-09"
+              localStartDate: "2021-10-08"
+              internalName: A1
+              internalNotes: Some notes
+              headerTitle: A1 Title
+              headerPreTitle: saas
+              status: draft
+              timeZone: America/New_York
+              headerImageSize: contain
+              headerTextPosition: above
+              headerSubTitle: Sub title
+              venue: "Venue #1"
+        required: true
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceUpdatedResponse"
+        400:
+          $ref: "#/components/responses/InvalidOperationResponse"
+        404:
+          description: "Resource was not found"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+        500:
+          description: "Internal server error"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putOneProgram-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,DELETE,PUT,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/programs/{id}/restore":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    put:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceRestoredResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putRestoreOneProgram-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  /programs:
+    get:
+      parameters:
+        - name: model
+          in: query
+          schema:
+            type: object
+            properties:
+              pagination:
+                type: object
+                properties:
+                  pageIndex:
+                    type: integer
+                  pageSize:
+                    type: integer
+              sort:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  desc:
+                    type: boolean
+              dateFilter:
+                type: string
+              text:
+                type: string
+              localStartDate:
+                type: string
+                format: date
+              localEndDate:
+                type: string
+                format: date
+              deleted:
+                type: boolean
+                default: false
+          required: true
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                type: object
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${get-programs-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostOneProgramModel"
+      responses:
+        "201":
+          $ref: "#/components/responses/ResourceCreatedResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${postOneProgram-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  /components:
+    post:
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/PostAddComponentModel"
+                - $ref: "#/components/schemas/PostCreateComponentModel"
+      responses:
+        "201":
+          $ref: "#/components/responses/ResourceCreatedResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${postOneComponent-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/components/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  dates:
+                    type: array
+                    items:
+                      type: object
+                  libraryComponent:
+                    type: boolean
+                  card:
+                    type: object
+                    description: truthy if component can have 1 card only. otherwise falsy
+                  cards:
+                    type: array
+                    description: truthy if component can have more than 1 card. otherwise falsy.
+                    items:
+                      type: object
+                  ad:
+                    type: boolean
+                  style:
+                    type: string
+                  internalName:
+                    type: string
+                  title:
+                    type: string
+                  subTitle:
+                    type: string
+                  cardImagePosition:
+                    type: string
+                  cardImageSize:
+                    type: string
+                  visible:
+                    type: boolean
+                  maxCards:
+                    type: integer
+                  viewAllText:
+                    type: string
+                  status:
+                    type: string
+                required:
+                  [
+                    id,
+                    name,
+                    type,
+                    libraryComponent,
+                    ad,
+                    style,
+                    internalName,
+                    visible,
+                    maxCards,
+                    viewAllText,
+                  ]
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${getOneComponent-function-arn}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    delete:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceDeletedResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${deleteOneComponent-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceUpdatedResponse"
+        400:
+          $ref: "#/components/responses/InvalidOperationResponse"
+        404:
+          description: "Component was not found"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+        500:
+          description: "Internal server error"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putOneComponent-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,DELETE,PUT,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/components/{id}/undelete":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    post:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceRestoredResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${unDeleteOneComponent-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/cards/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  componentId:
+                    type: string
+                  action:
+                    type: string
+                  pageId:
+                    type: integer
+                  title:
+                    type: string
+                  visible:
+                    type: boolean
+                  description:
+                    type: string
+                  orderIndex:
+                    type: string
+                  imageUrl:
+                    type: string
+                required: [id, componentId, orderIndex]
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${getOneCard-function-arn}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    delete:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceDeletedResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${deleteOneCard-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceUpdatedResponse"
+        400:
+          $ref: "#/components/responses/InvalidOperationResponse"
+        404:
+          description: "Card was not found"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+        500:
+          description: "Internal server error"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putOneCard-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,DELETE,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/pages/{id}/restore":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    put:
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceRestoredResponse"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putRestoreOnePage-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        200:
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/designVariables/{id}":
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          $ref: "#/components/responses/ResourceUpdatedResponse"
+        400:
+          $ref: "#/components/responses/InvalidOperationResponse"
+        404:
+          description: "Design was not found"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+        500:
+          description: "Internal server error"
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${putOneDesignVariable-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/designVariables":
+    get:
+      responses:
+        200:
+          description: "Ok"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${getManyDesignVariables-function-arn}:${lambda_alias}/invocations"
+        credentials: "${lambda_execution_role_arn}"
+        responses:
+        default:
+          statusCode: "200"
+          responseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'*'"
+        type: aws_proxy
+        httpMethod: "POST"
+    options:
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+
+components:
+  schemas:
+    PostCreateComponentModel:
+      type: object
+      properties:
+        createOrAdd:
+          type: string
+          enum:
+            - create
+        internalName:
+          type: string
+        pageOrProgramId:
+          type: integer
+        type:
+          type: string
+        visible:
+          type: boolean
+    PostAddComponentModel:
+      type: object
+      properties:
+        componentId:
+          type: integer
+        createOrAdd:
+          type: string
+          enum:
+            - add
+        pageOrProgramId:
+          type: integer
+    PutOnePageModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        internalName:
+          type: string
+        headerImageUrl:
+          type: string
+        headerTitle:
+          type: string
+        headerImageSize:
+          type: string
+        headerTextPosition:
+          type: string
+        status:
+          type: string
+        headerPreTitle:
+          type: string
+        headerSubTitle:
+          type: string
+    PageModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        internalName:
+          type: string
+        headerImageUrl:
+          type: string
+        headerTitle:
+          type: string
+        headerImageSize:
+          type: string
+        headerTextPosition:
+          type: string
+        status:
+          type: string
+        headerPreTitle:
+          type: string
+        headerSubTitle:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        defaultTimeZone:
+          type: string
+    Record:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: string
+    Program:
+      type: object
+      properties:
+        title:
+          type: string
+        season:
+          type: string
+        venue:
+          type: string
+        headerImageUrl:
+          type: string
+        localStartDate:
+          type: string
+          format: date
+        localEndDate:
+          type: string
+          format: date
+    Production:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        dates:
+          type: array
+          items:
+            type: string
+            format: date
+        imageUrl:
+          type: string
+    PostOneProgramModel:
+      required:
+        - headerTitle
+        - localStartDate
+        - localEndDate
+        - timeZone
+      properties:
+        headerTitle:
+          type: string
+        headerImageUrl:
+          type: string
+        localStartDate:
+          type: string
+          format: date-time
+        localEndDate:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        season:
+          type: string
+  responses:
+    "InvalidOperationResponse":
+      description: "Invalid operation"
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    "OkResponse":
+      description: "Operation has been succesful"
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    "ResourceUpdatedResponse":
+      description: "Resource has been updated"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: "The id of the updated resource"
+            required: [id]
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    "ResourceDeletedResponse":
+      description: "Resource has been deleted"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: "The id of the deleted resource"
+            required: [id]
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    "ResourceRestoredResponse":
+      description: "Resource has been restored"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: "The id of the restored resource"
+            required: [id]
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+    "ResourceCreatedResponse":
+      description: "Resource has been created"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: "The id of the created resource"
+            required: [id]
+      headers:
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header

@@ -1,0 +1,55 @@
+# https://aka.ms/yaml
+resources:
+  repositories:
+  - repository: templates
+    type: github
+    endpoint: switchcase-build
+    name: SwitchCaseGroup/switchcase-azure-pipelines-templates
+    ref: refs/heads/master
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - "infrastructure/network/*"
+    exclude:
+      - "infrastructure/network/README.md"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".keepme"
+      - ".vscode/*"
+pr:
+  autoCancel: true
+  drafts: true
+  paths:
+    include:
+      - "infrastructure/network/*"
+    exclude:
+      - "infrastructure/network/README.md"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".keepme"
+      - ".vscode/*"
+
+variables:
+- name: terraformVersion
+  value: "0.14.11"
+- name: projectDirectory
+  value: infrastructure/network
+
+jobs:
+- template: jobs/validate_terraform.yml@templates
+  parameters:
+    terraformVersion: $(terraformVersion)
+    projectDirectory: $(projectDirectory)
+# secure_terraform does not support projectDirectory parameter yet
+#- template: jobs/secure_terraform.yml@templates
+#  parameters:
+#    terraformVersion: $(terraformVersion)
+#    projectDirectory: $(projectDirectory)
+- template: jobs/document_terraform.yml@templates
+  parameters:
+    projectDirectory: $(projectDirectory)

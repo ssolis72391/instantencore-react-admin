@@ -1,0 +1,17 @@
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+*.tmp
+*.bk
+*.bkup
+.DS_Store
+*.log
+*.tfstate.backup
+*.terraform
+*.auto.tfvars
+*.tfvars
+!example.tfvars
+rendered/
