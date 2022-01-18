@@ -1,0 +1,26 @@
+parameters:
+  environment: ''
+  testing: true
+jobs: 
+- deployment:
+  environment: 
+    name:  ${{ parameters.environment }}
+    resourceType: VirtualMachine
+  workspace:
+    clean: all
+  variables:
+    - name: binFolder
+      value: $(Pipeline.Workspace)/build/bin
+    - name: packageFolder
+      value: $(Pipeline.Workspace)/build/package
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: NodeTool@0
+          displayName: 'Use Node 12.x'
+          inputs:
+            versionSpec: 12.x
+        - bash: |
+            node $(binFolder)/deploy.js $(System.StageName) $(packageFolder)
+          displayName: 'Deploy $(System.StageName)'

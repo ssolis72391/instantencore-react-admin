@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta
+      name="viewport"
+      content="shrink-to-fit=no, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>Digital Program Book</title>
+    <base href="<%= htmlWebpackPlugin.options.basepath %>" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="digital-program-book.min.js"></script>
+
+    <style>
+      /* @font-face {
+        font-family: "Montserrat";
+        src: url("fonts/montserrat-regular.eot");
+        src: url("fonts/montserrat-regular.eot?#iefix")
+            format("embedded-opentype"),
+          url("fonts/montserrat-regular.woff") format("woff"),
+          url("fonts/montserrat-regular.ttf") format("truetype"),
+          url("fonts/montserrat-regular.svg#Montserrat") format("svg");
+        font-style: normal;
+        font-weight: normal;
+      }
+
+      @font-face {
+        font-family: "Montserrat-Light";
+        src: url("fonts/montserrat-light.woff") format("woff"),
+          url("fonts/montserrat-light.woff2") format("woff2");
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Open Sans";
+        src: url("fonts/OpenSans-Regular.eot");
+        src: url("fonts/OpenSans-Regular.eot?#iefix")
+            format("embedded-opentype"),
+          url("fonts/OpenSans-Regular.woff") format("woff"),
+          url("fonts/OpenSans-Regular.ttf") format("truetype"),
+          url("fonts/OpenSans-Regular.svg#OpenSans") format("svg");
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Open Sans Light";
+        src: url("fonts/OpenSans-Light.eot");
+        src: url("fonts/OpenSans-Light.eot?#iefix") format("embedded-opentype"),
+          url("fonts/OpenSans-Light.woff") format("woff"),
+          url("fonts/OpenSans-Light.ttf") format("truetype"),
+          url("fonts/OpenSans-Light.svg#OpenSans") format("svg");
+        font-style: normal;
+      } */
+
+      html {
+        font-size: 16px;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Montserrat", sans-serif;
+        color: var(--page-text-color);
+        background-color: var(--page-background-color);
+        word-break: break-word;
+        user-select: none;
+      }
+
+      .debugInfo {
+        color: white;
+        background-color: black;
+        padding: 5px;
+        font-size: 12px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app"></div>
+    <script type="text/javascript">
+      const urlString = window.location.href; // 'https://insideguide.evan.instantencore.com?useMocks=true';
+      const url = new URL(urlString);
+      const debug = url.searchParams.get("debug") === "true" || false;
+      let cid = url.searchParams.get("cid");
+      var vanityDomain = url.hostname.replace(/^dpb-web\./, "");
+      // for debug and unit test purposes only
+      if (!/^dpb-web\./.test(url.hostname)) {
+        vanityDomain = "evan.instantencore.com";
+        if (!cid) {
+          cid = 1;
+        }
+      }
+      const useMocks = url.searchParams.get("useMocks") === "true" || false;
+      const dpb = new DigitalProgramBookComponent({
+        target: "app",
+        cid: cid,
+        apiBasePath: `https://dpb-api.${vanityDomain}/1`,
+        useMocks: useMocks,
+        useBrowserRouter: true,
+        onEvent: function (eventData) {
+          console.log("on event in web", eventData);
+        },
+      });
+      dpb.display();
+      const version = dpb.version();
+      if (debug) {
+        document
+          .getElementsByTagName("body")[0]
+          .insertAdjacentHTML(
+            "afterbegin",
+            "<div id='embed-version' class='debugInfo'>Version: " +
+              version +
+              "</div>"
+          );
+      }
+    </script>
+  </body>
+</html>

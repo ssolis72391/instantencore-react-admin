@@ -1,0 +1,57 @@
+# https://aka.ms/yaml
+resources:
+  pipelines:
+  - pipeline: build
+    source: instantencore-digital-program-book-workspace-client-web
+    trigger: 
+      branches:
+      - '*'
+
+
+# only triggered by pipeline trigger
+trigger: none
+pr: none
+
+stages:
+
+- stage: production
+  dependsOn: [copper]
+  jobs:
+  - template: templates/jobs/deploy.yml
+    parameters:
+      environment: production-instantencore-pipe-env
+
+- stage: copper
+  dependsOn: []
+  jobs:
+  - template: templates/jobs/deploy.yml
+    parameters:
+      environment: copper-instantencore-pipe-env
+
+- stage: silver
+  dependsOn: []
+  jobs:
+  - template: templates/jobs/deploy.yml
+    parameters:
+      environment: silver-instantencore-pipe-env
+
+- stage: orange
+  dependsOn: []
+  jobs:
+  - template: templates/jobs/deploy.yml
+    parameters:
+      environment: orange-instantencore-pipe-env
+
+- stage: evan
+  dependsOn: []
+  jobs:
+  - template: templates/jobs/deploy.yml
+    parameters:
+      environment: evan-instantencore-pipe-env
+
+- stage: zach
+  dependsOn: []
+  jobs:
+  - template: templates/jobs/deploy.yml
+    parameters:
+      environment: zach-instantencore-pipe-env

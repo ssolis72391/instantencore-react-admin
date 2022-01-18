@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "**/*deploy.yml": "azure-pipelines"
+  },
+  "markdown.extension.toc.levels": "2..2",
+  "markdown.extension.toc.updateOnSave": false
+}

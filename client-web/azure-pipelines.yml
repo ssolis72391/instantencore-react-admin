@@ -1,0 +1,52 @@
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/vsts/pipelines/languages/javascript
+# https://docs.microsoft.com/en-us/vsts/pipelines/tasks/
+
+trigger:
+  batch: true
+  # branches:
+  #   include:
+  #     - master
+  paths:
+    include:
+      - "client-web/*"
+    exclude:
+      - "client-web/README.md"
+pr:
+  autoCancel: true
+  drafts: false
+  paths:
+    include:
+      - "client-web/*"
+    exclude:
+      - "client-web/README.md"
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      endpoint: switchcase-build
+      name: SwitchCaseGroup/switchcase-azure-pipelines-templates
+      ref: refs/heads/master
+    - repository: self
+      clean: true
+
+variables:
+  - group: private-npm-registry
+  - name: pathHere
+    value: $(System.DefaultWorkingDirectory)/client-web # value of the variable
+
+jobs:
+  - template: jobs/build_yarn.yml@templates
+    parameters:
+      nodeVersionSpec: "12.x"
+      projectDirectory: "${{ variables.pathHere }}"
+      sourceFolder: "${{ variables.pathHere }}/dist"
+      summaryFileLocation: "${{ variables.pathHere }}/artifacts/coverage/cobertura-coverage.xml"
+      reportDirectory: "${{ variables.pathHere }}/artifacts/coverage/"
+      env:
+        NPM_AUTH_IDENT_SWITCHCASE: $(NPM_AUTH_IDENT_SWITCHCASE)
+  - job: publish_bin
+    steps:
+    - publish: ${{ variables.pathHere }}/bin
+      artifact: bin

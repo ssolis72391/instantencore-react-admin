@@ -1,0 +1,99 @@
+{
+  "name": "@instantencore/digital-program-book-client-web",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "scripts": {
+    "audit:critical": "yarn audit --registry=https://registry.npmjs.org/ --frozen-lockfile --level high --groups dependencies",
+    "prebuild": "yarn rm -rf dist/",
+    "build": "webpack --mode=production",
+    "deploy": "node bin/deploy.js",
+    "format:package": "format-package -w package.json",
+    "lint": "prettier --check *.md *.js *.json && format-package",
+    "lint:fix": "prettier --write *.md *.js *.json && format-package -w",
+    "refreshVSToken": "vsts-npm-auth -config .npmrc",
+    "rm": "yarn rimraf",
+    "start": "yarn webpack serve --open --env development --progress --mode development",
+    "test": "jest",
+    "update-local-client-core": "node ./tools/updateLocalClientCore.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write"
+    ],
+    "package.json": [
+      "yarn run format:package --"
+    ]
+  },
+  "babel": {
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true,
+      "jest": true,
+      "node": true
+    },
+    "extends": [
+      "plugin:prettier/recommended"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "impliedStrict": true
+      },
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "@typescript-eslint/no-use-before-define": "off"
+    }
+  },
+  "prettier": "@switchcase/prettier-config",
+  "dependencies": {
+    "@instantencore/digital-program-book": "0.1.53",
+    "install": "^0.13.0",
+    "validatorjs": "^3.22.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@switchcase/prettier-config": "^0.1.2",
+    "assets-webpack-plugin": "^7.0.0",
+    "babel-eslint": "^10.1.0",
+    "copy-webpack-plugin": "^8.1.0",
+    "dotenv": "^9.0.2",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "format-package": "^6.1.0",
+    "html-webpack-plugin": "^5.3.1",
+    "husky": "^6.0.0",
+    "jest": "^26.1.0",
+    "lint-staged": "^10.1.1",
+    "prettier": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
